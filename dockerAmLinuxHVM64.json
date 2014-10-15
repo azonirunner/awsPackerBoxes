@@ -1,0 +1,48 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `MHICKIE_ACCESS`}}",
+    "aws_secret_key": "{{env `MHICKIE_SECRET`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-west-2",
+    "subnet_id": "subnet-9fc23de8",
+    "security_group_id": "sg-6624b003",
+    "source_ami": "ami-8786c6b7",
+    "instance_type": "t2.micro",
+    "ssh_username": "ec2-user",
+    "ssh_port": "22",
+    "ami_name": "dockerBaseAmLinuxHVM64Bit_{{isotime \"200601021504\"}}_Pack",
+    "ami_description": "dockerBaseAmazonLinuxHVMwith64Bit_PackM",
+    "tags": {
+        "Name": "dockerBaseAmazonLinux-HVM-64",
+        "OS_Version": "AmazonLinux-HVM-64",
+        "Release": "Latest",
+        "Web": "nginx",
+        "Orig_AMI_ID": "ami-8786c6b7",
+        "AMIDescription": "amzn-ami-hvm-2014.09.0.x86_64-ebs - ami-8786c6b7"
+    }
+  }],
+  "provisioners":
+ [
+   {
+    "type": "shell",
+    "inline":[
+      "sleep 30",
+      "sudo yum -y update",
+      "sudo sed -i '/^ZONE=/ c\\ZONE=\"America/Phoenix\"' /etc/sysconfig/clock",
+      "sudo ln -sf /usr/share/zoneinfo/America/Phoenix /etc/localtime"
+     ]
+   },
+   {
+    "type": "shell",
+    "execute_command": "echo 'ec2-user'|{{.Vars}} sudo -S -E bash '{{.Path}}'",
+    "scripts": [
+        "scripts/update.sh",
+        "scripts/installDocker.sh"
+     ] 
+   }
+ ]
+}
