@@ -18,6 +18,6 @@ packer template for generating an AMI for 64 bit HVM amazon linux ami with docke
 	-- yum update
 	-- sets timezone (Note - need to do this as variable in template)
 	-- basic update script - adjusts some .bash_profile items
-	-- installs docker and makes sure it is setup in chkconfig
+	-- installs docker and makes sure it is setup in chkconfig 
 
 More to follow...... 
