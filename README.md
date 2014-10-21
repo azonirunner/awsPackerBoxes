@@ -1,7 +1,6 @@
 awsPackerBoxes
 ==============
-
-# Packer files for creating AMIs for AWS
+Packer files for creating AMIs for AWS
 
 ##baseAmLinuxHVM64
 ------------------
